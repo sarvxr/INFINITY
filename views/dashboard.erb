@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Infinity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Rajdhani', sans-serif;
+        }
+        
+        .orbitron {
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.5), 0 0 40px rgba(147, 51, 234, 0.3), 0 0 60px rgba(147, 51, 234, 0.1);
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 10px rgba(147, 51, 234, 0.8), 0 0 20px rgba(147, 51, 234, 0.6), 0 0 30px rgba(147, 51, 234, 0.4);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulseGlow {
+            from { box-shadow: 0 0 20px rgba(147, 51, 234, 0.5); }
+            to { box-shadow: 0 0 40px rgba(147, 51, 234, 0.8), 0 0 60px rgba(147, 51, 234, 0.4); }
+        }
+        
+        .cyber-grid {
+            background-image: 
+                linear-gradient(rgba(147, 51, 234, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(147, 51, 234, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .holographic {
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            background-size: 200% 200%;
+            animation: holographic 3s ease-in-out infinite;
+        }
+        
+        @keyframes holographic {
+            0% { background-position: -200% -200%; }
+            100% { background-position: 200% 200%; }
+        }
+        
+        .cyber-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .cyber-button:hover::before {
+            left: 100%;
+        }
+        
+        .cyber-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.4);
+        }
+        
+        .matrix-bg {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .matrix-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(147,51,234,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: matrixMove 30s linear infinite;
+        }
+        
+        @keyframes matrixMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(10px, 10px); }
+        }
+        
+        .dashboard-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px) rotateX(2deg) rotateY(2deg);
+            box-shadow: 0 20px 40px rgba(147, 51, 234, 0.3);
+        }
+        
+        .sidebar-item {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(147, 51, 234, 0.2), transparent);
+            transition: left 0.3s;
+        }
+        
+        .sidebar-item:hover::before {
+            left: 100%;
+        }
+        
+        .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(147, 51, 234, 0.2), transparent);
+            border-right: 3px solid #9333ea;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid rgba(147, 51, 234, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(147, 51, 234, 0.2);
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dasharray 0.35s;
+            transform-origin: 50% 50%;
+        }
+        
+        .activity-item {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .activity-item:hover {
+            border-left-color: #9333ea;
+            background: rgba(147, 51, 234, 0.1);
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .modal-content {
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .loading-dots {
+            display: inline-block;
+        }
+        
+        .loading-dots::after {
+            content: '';
+            animation: loadingDots 1.5s infinite;
+        }
+        
+        @keyframes loadingDots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .data-stream {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(147, 51, 234, 0.1), transparent);
+            animation: dataStream 2s linear infinite;
+        }
+        
+        @keyframes dataStream {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body class="matrix-bg min-h-screen">
+    <div x-data="dashboard()" class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-80 glass-effect border-r border-purple-500/20 flex flex-col">
+            <div class="p-6 border-b border-purple-500/20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-xl flex items-center justify-center neon-glow floating">
+                        <i class="fas fa-infinity text-white text-lg"></i>
+                    </div>
+                    <span class="text-2xl font-bold gradient-text orbitron">INFINITY</span>
+                </div>
+            </div>
+            
+            <nav class="flex-1 p-4 space-y-2">
+                <button @click="activeTab = 'overview'" :class="activeTab === 'overview' ? 'sidebar-item active' : 'sidebar-item'" class="w-full text-left px-4 py-3 rounded-xl text-white hover:bg-purple-500/20 transition-all">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span class="font-semibold">Command Center</span>
+                </button>
+                <button @click="activeTab = 'accounts'" :class="activeTab === 'accounts' ? 'sidebar-item active' : 'sidebar-item'" class="w-full text-left px-4 py-3 rounded-xl text-white hover:bg-purple-500/20 transition-all">
+                    <i class="fas fa-users mr-3"></i>
+                    <span class="font-semibold">Account Hub</span>
+                </button>
+                <button @click="activeTab = 'automation'" :class="activeTab === 'automation' ? 'sidebar-item active' : 'sidebar-item'" class="w-full text-left px-4 py-3 rounded-xl text-white hover:bg-purple-500/20 transition-all">
+                    <i class="fas fa-robot mr-3"></i>
+                    <span class="font-semibold">AI Automation</span>
+                </button>
+                <button @click="activeTab = 'analytics'" :class="activeTab === 'analytics' ? 'sidebar-item active' : 'sidebar-item'" class="w-full text-left px-4 py-3 rounded-xl text-white hover:bg-purple-500/20 transition-all">
+                    <i class="fas fa-chart-line mr-3"></i>
+                    <span class="font-semibold">Analytics</span>
+                </button>
+                <button @click="activeTab = 'settings'" :class="activeTab === 'settings' ? 'sidebar-item active' : 'sidebar-item'" class="w-full text-left px-4 py-3 rounded-xl text-white hover:bg-purple-500/20 transition-all">
+                    <i class="fas fa-cog mr-3"></i>
+                    <span class="font-semibold">Settings</span>
+                </button>
+            </nav>
+            
+            <div class="p-4 border-t border-purple-500/20">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-white text-sm"></i>
+                        </div>
+                        <div>
+                            <div class="text-white font-semibold" x-text="user?.username || 'User'"></div>
+                            <div class="text-gray-400 text-sm">Online</div>
+                        </div>
+                    </div>
+                    <button @click="logout()" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-auto">
+            <div class="p-8">
+                <!-- Overview Tab -->
+                <div x-show="activeTab === 'overview'" class="space-y-8">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-4xl font-bold gradient-text orbitron">Command Center</h1>
+                        <div class="text-gray-400">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span x-text="new Date().toLocaleString()"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="stat-card rounded-2xl p-6 dashboard-card">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 mb-2">Total Followers</p>
+                                    <p class="text-3xl font-bold gradient-text" x-text="stats.total_followers || 0"></p>
+                                </div>
+                                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center neon-glow">
+                                    <i class="fas fa-users text-white text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex items-center text-green-400 text-sm">
+                                    <i class="fas fa-arrow-up mr-1"></i>
+                                    <span>+12.5%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card rounded-2xl p-6 dashboard-card">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 mb-2">Total Following</p>
+                                    <p class="text-3xl font-bold gradient-text" x-text="stats.total_following || 0"></p>
+                                </div>
+                                <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center neon-glow">
+                                    <i class="fas fa-user-plus text-white text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex items-center text-green-400 text-sm">
+                                    <i class="fas fa-arrow-up mr-1"></i>
+                                    <span>+8.3%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card rounded-2xl p-6 dashboard-card">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 mb-2">Total Likes</p>
+                                    <p class="text-3xl font-bold gradient-text" x-text="stats.total_likes || 0"></p>
+                                </div>
+                                <div class="w-12 h-12 bg-gradient-to-r from-red-500 to-pink-500 rounded-xl flex items-center justify-center neon-glow">
+                                    <i class="fas fa-heart text-white text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex items-center text-green-400 text-sm">
+                                    <i class="fas fa-arrow-up mr-1"></i>
+                                    <span>+15.7%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card rounded-2xl p-6 dashboard-card">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 mb-2">Active Accounts</p>
+                                    <p class="text-3xl font-bold gradient-text" x-text="stats.accounts_count || 0"></p>
+                                </div>
+                                <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center neon-glow">
+                                    <i class="fas fa-user-circle text-white text-xl"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex items-center text-green-400 text-sm">
+                                    <i class="fas fa-check mr-1"></i>
+                                    <span>All Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="glass-effect rounded-2xl p-6 dashboard-card">
+                            <h3 class="text-xl font-bold text-white mb-4">Follower Growth</h3>
+                            <div class="chart-container">
+                                <canvas id="followerChart"></canvas>
+                                <div class="data-stream"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-effect rounded-2xl p-6 dashboard-card">
+                            <h3 class="text-xl font-bold text-white mb-4">Activity Overview</h3>
+                            <div class="chart-container">
+                                <canvas id="activityChart"></canvas>
+                                <div class="data-stream"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="glass-effect rounded-2xl p-6 dashboard-card">
+                        <h3 class="text-xl font-bold text-white mb-6">Recent Activity</h3>
+                        <div class="space-y-4">
+                            <template x-for="activity in recentActivity" :key="activity.id">
+                                <div class="activity-item flex items-center justify-between p-4 rounded-xl bg-gray-800/50">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                                            <span class="text-white text-lg" x-text="activity.action_icon"></span>
+                                        </div>
+                                        <div>
+                                            <p class="text-white font-semibold" x-text="activity.action + ' ' + activity.target"></p>
+                                            <p class="text-gray-400 text-sm" x-text="activity.time_ago"></p>
+                                        </div>
+                                    </div>
+                                    <span :class="activity.success ? 'text-green-400' : 'text-red-400'" class="font-semibold" x-text="activity.status_text"></span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accounts Tab -->
+                <div x-show="activeTab === 'accounts'" class="space-y-8">
+                    <div class="flex justify-between items-center">
+                        <h1 class="text-4xl font-bold gradient-text orbitron">Account Hub</h1>
+                        <button @click="showAddAccount = true" class="cyber-button bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold neon-glow">
+                            <i class="fas fa-plus mr-2"></i>Add Account
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <template x-for="account in accounts" :key="account.id">
+                            <div class="glass-effect rounded-2xl p-6 dashboard-card holographic">
+                                <div class="flex justify-between items-start mb-6">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-white mb-2" x-text="account.email"></h3>
+                                        <span :class="getStatusColor(account.status)" class="px-3 py-1 rounded-full text-sm font-semibold" x-text="account.status"></span>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button @click="editAccount(account)" class="text-blue-400 hover:text-blue-300 transition-colors">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button @click="deleteAccount(account.id)" class="text-red-400 hover:text-red-300 transition-colors">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-3 mb-6">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-400">Followers:</span>
+                                        <span class="text-white font-semibold" x-text="account.followers_count || 0"></span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-400">Following:</span>
+                                        <span class="text-white font-semibold" x-text="account.following_count || 0"></span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-gray-400">Likes:</span>
+                                        <span class="text-white font-semibold" x-text="account.likes_count || 0"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex space-x-3">
+                                    <button @click="startAutomation(account.id)" class="flex-1 cyber-button bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 rounded-xl font-semibold">
+                                        <i class="fas fa-play mr-2"></i>Start
+                                    </button>
+                                    <button @click="stopAutomation(account.id)" class="flex-1 cyber-button bg-gradient-to-r from-red-600 to-pink-600 text-white py-3 rounded-xl font-semibold">
+                                        <i class="fas fa-stop mr-2"></i>Stop
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Automation Tab -->
+                <div x-show="activeTab === 'automation'" class="space-y-8">
+                    <h1 class="text-4xl font-bold gradient-text orbitron">AI Automation</h1>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="glass-effect rounded-2xl p-8 dashboard-card">
+                            <h2 class="text-2xl font-bold text-white mb-6">Automation Settings</h2>
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-gray-300 mb-3 font-semibold">Target Followers</label>
+                                    <input type="number" x-model="automationSettings.targetFollowers" class="w-full bg-gray-800/50 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:border-purple-500 focus:outline-none transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-300 mb-3 font-semibold">Delay Between Actions (seconds)</label>
+                                    <input type="number" x-model="automationSettings.delay" class="w-full bg-gray-800/50 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:border-purple-500 focus:outline-none transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-300 mb-3 font-semibold">Daily Limit</label>
+                                    <input type="number" x-model="automationSettings.dailyLimit" class="w-full bg-gray-800/50 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:border-purple-500 focus:outline-none transition-all">
+                                </div>
+                                <button @click="saveAutomationSettings()" class="w-full cyber-button bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-bold text-lg neon-glow">
+                                    <i class="fas fa-save mr-2"></i>Save Configuration
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-effect rounded-2xl p-8 dashboard-card">
+                            <h2 class="text-2xl font-bold text-white mb-6">Active Automations</h2>
+                            <div class="space-y-4">
+                                <template x-for="automation in activeAutomations" :key="automation.id">
+                                    <div class="flex items-center justify-between p-4 bg-gray-800/50 rounded-xl">
+                                        <div>
+                                            <p class="text-white font-semibold" x-text="automation.account_email"></p>
+                                            <p class="text-gray-400 text-sm" x-text="'Progress: ' + automation.progress + '%'"></p>
+                                        </div>
+                                        <button @click="stopAutomation(automation.account_id)" class="text-red-400 hover:text-red-300 transition-colors">
+                                            <i class="fas fa-stop"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div x-show="activeTab === 'analytics'" class="space-y-8">
+                    <h1 class="text-4xl font-bold gradient-text orbitron">Analytics</h1>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="glass-effect rounded-2xl p-6 dashboard-card">
+                            <h2 class="text-2xl font-bold text-white mb-6">Performance Metrics</h2>
+                            <div class="chart-container">
+                                <canvas id="performanceChart"></canvas>
+                                <div class="data-stream"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-effect rounded-2xl p-6 dashboard-card">
+                            <h2 class="text-2xl font-bold text-white mb-6">Engagement Analysis</h2>
+                            <div class="chart-container">
+                                <canvas id="engagementChart"></canvas>
+                                <div class="data-stream"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div x-show="activeTab === 'settings'" class="space-y-8">
+                    <h1 class="text-4xl font-bold gradient-text orbitron">Settings</h1>
+                    
+                    <div class="glass-effect rounded-2xl p-8 dashboard-card max-w-2xl">
+                        <h2 class="text-2xl font-bold text-white mb-6">Profile Configuration</h2>
+                        <form @submit.prevent="updateSettings()" class="space-y-6">
+                            <div>
+                                <label class="block text-gray-300 mb-3 font-semibold">Username</label>
+                                <input type="text" x-model="userSettings.username" class="w-full bg-gray-800/50 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:border-purple-500 focus:outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-gray-300 mb-3 font-semibold">Email Address</label>
+                                <input type="email" x-model="userSettings.email" class="w-full bg-gray-800/50 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:border-purple-500 focus:outline-none transition-all">
+                            </div>
+                            <button type="submit" class="cyber-button bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-bold text-lg neon-glow">
+                                <i class="fas fa-save mr-2"></i>Update Configuration
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Account Modal -->
+        <div x-show="showAddAccount" x-cloak class="fixed inset-0 modal-backdrop flex items-center justify-center z-50">
+            <div class="glass-effect rounded-2xl p-8 max-w-md w-full mx-4 modal-content border border-purple-500/30">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold gradient-text orbitron">Add Facebook Account</h2>
+                    <button @click="showAddAccount = false" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                
+                <form @submit.prevent="addAccount()" class="space-y-6">
+                    <div>
+                        <label class="block text-gray-300 mb-3 font-semibold">Facebook Email</label>
+                        <input type="email" x-model="newAccount.email" required class="w-full bg-gray-800/50 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:border-purple-500 focus:outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-gray-300 mb-3 font-semibold">Facebook Password</label>
+                        <input type="password" x-model="newAccount.password" required class="w-full bg-gray-800/50 border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:border-purple-500 focus:outline-none transition-all">
+                    </div>
+                    <button type="submit" class="w-full cyber-button bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-bold text-lg neon-glow">
+                        <i class="fas fa-plus mr-2"></i>Add Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function dashboard() {
+            return {
+                activeTab: 'overview',
+                user: null,
+                stats: {},
+                accounts: [],
+                recentActivity: [],
+                activeAutomations: [],
+                automationSettings: {
+                    targetFollowers: 10,
+                    delay: 3,
+                    dailyLimit: 50
+                },
+                userSettings: {
+                    username: '',
+                    email: ''
+                },
+                newAccount: {
+                    email: '',
+                    password: ''
+                },
+                showAddAccount: false,
+
+                init() {
+                    this.loadUser();
+                    this.loadStats();
+                    this.loadAccounts();
+                    this.loadRecentActivity();
+                    this.loadSettings();
+                    this.setupCharts();
+                    this.initializeAnimations();
+                },
+
+                initializeAnimations() {
+                    // GSAP animations for dashboard elements
+                    gsap.from('.dashboard-card', {
+                        duration: 0.8,
+                        y: 50,
+                        opacity: 0,
+                        stagger: 0.1,
+                        ease: 'power3.out'
+                    });
+                    
+                    gsap.from('.stat-card', {
+                        duration: 1,
+                        scale: 0.8,
+                        opacity: 0,
+                        stagger: 0.2,
+                        ease: 'back.out(1.7)'
+                    });
+                },
+
+                async loadUser() {
+                    const userStr = localStorage.getItem('user');
+                    if (userStr) {
+                        this.user = JSON.parse(userStr);
+                        this.userSettings.username = this.user.username;
+                        this.userSettings.email = this.user.email;
+                    }
+                },
+
+                async loadStats() {
+                    try {
+                        const response = await fetch('/api/analytics', {
+                            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            this.stats = data.stats;
+                            this.recentActivity = data.recent_activity;
+                        }
+                    } catch (error) {
+                        console.error('Error loading stats:', error);
+                    }
+                },
+
+                async loadAccounts() {
+                    try {
+                        const response = await fetch('/api/facebook/accounts', {
+                            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+                        });
+                        if (response.ok) {
+                            this.accounts = await response.json();
+                        }
+                    } catch (error) {
+                        console.error('Error loading accounts:', error);
+                    }
+                },
+
+                async loadRecentActivity() {
+                    // Activity is loaded with stats
+                },
+
+                async loadSettings() {
+                    try {
+                        const response = await fetch('/api/settings', {
+                            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+                        });
+                        if (response.ok) {
+                            const data = await response.json();
+                            this.userSettings = data.user;
+                        }
+                    } catch (error) {
+                        console.error('Error loading settings:', error);
+                    }
+                },
+
+                async addAccount() {
+                    try {
+                        const response = await fetch('/api/facebook/connect', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            },
+                            body: JSON.stringify(this.newAccount)
+                        });
+
+                        if (response.ok) {
+                            this.showAddAccount = false;
+                            this.newAccount = { email: '', password: '' };
+                            this.loadAccounts();
+                            alert('Account added successfully!');
+                        } else {
+                            const error = await response.json();
+                            alert(error.error || 'Failed to add account');
+                        }
+                    } catch (error) {
+                        alert('Network error. Please try again.');
+                    }
+                },
+
+                async startAutomation(accountId) {
+                    try {
+                        const response = await fetch('/api/followers/start', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            },
+                            body: JSON.stringify({
+                                account_id: accountId,
+                                target_count: this.automationSettings.targetFollowers
+                            })
+                        });
+
+                        if (response.ok) {
+                            alert('Automation started successfully!');
+                        } else {
+                            const error = await response.json();
+                            alert(error.error || 'Failed to start automation');
+                        }
+                    } catch (error) {
+                        alert('Network error. Please try again.');
+                    }
+                },
+
+                async stopAutomation(accountId) {
+                    try {
+                        const response = await fetch('/api/followers/stop', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            },
+                            body: JSON.stringify({ account_id: accountId })
+                        });
+
+                        if (response.ok) {
+                            alert('Automation stopped successfully!');
+                        } else {
+                            const error = await response.json();
+                            alert(error.error || 'Failed to stop automation');
+                        }
+                    } catch (error) {
+                        alert('Network error. Please try again.');
+                    }
+                },
+
+                async updateSettings() {
+                    try {
+                        const response = await fetch('/api/settings', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            },
+                            body: JSON.stringify(this.userSettings)
+                        });
+
+                        if (response.ok) {
+                            alert('Settings updated successfully!');
+                        } else {
+                            const error = await response.json();
+                            alert(error.error || 'Failed to update settings');
+                        }
+                    } catch (error) {
+                        alert('Network error. Please try again.');
+                    }
+                },
+
+                async saveAutomationSettings() {
+                    localStorage.setItem('automationSettings', JSON.stringify(this.automationSettings));
+                    alert('Settings saved successfully!');
+                },
+
+                getStatusColor(status) {
+                    switch (status) {
+                        case 'active': return 'text-green-400 bg-green-400/10';
+                        case 'inactive': return 'text-gray-400 bg-gray-400/10';
+                        case 'suspended': return 'text-red-400 bg-red-400/10';
+                        default: return 'text-gray-400 bg-gray-400/10';
+                    }
+                },
+
+                setupCharts() {
+                    // Follower Growth Chart
+                    const followerCtx = document.getElementById('followerChart');
+                    if (followerCtx) {
+                        new Chart(followerCtx, {
+                            type: 'line',
+                            data: {
+                                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                                datasets: [{
+                                    label: 'Followers',
+                                    data: [1200, 1900, 3000, 5000, 2000, 3000],
+                                    borderColor: 'rgb(147, 51, 234)',
+                                    backgroundColor: 'rgba(147, 51, 234, 0.1)',
+                                    tension: 0.4,
+                                    fill: true
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        labels: { color: 'white' }
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        ticks: { color: 'white' },
+                                        grid: { color: 'rgba(255,255,255,0.1)' }
+                                    },
+                                    x: {
+                                        ticks: { color: 'white' },
+                                        grid: { color: 'rgba(255,255,255,0.1)' }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    // Activity Chart
+                    const activityCtx = document.getElementById('activityChart');
+                    if (activityCtx) {
+                        new Chart(activityCtx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Follows', 'Unfollows', 'Likes'],
+                                datasets: [{
+                                    data: [300, 50, 100],
+                                    backgroundColor: [
+                                        'rgb(34, 197, 94)',
+                                        'rgb(239, 68, 68)',
+                                        'rgb(59, 130, 246)'
+                                    ]
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        labels: { color: 'white' }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    // Performance Chart
+                    const performanceCtx = document.getElementById('performanceChart');
+                    if (performanceCtx) {
+                        new Chart(performanceCtx, {
+                            type: 'bar',
+                            data: {
+                                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                                datasets: [{
+                                    label: 'Performance',
+                                    data: [65, 59, 80, 81, 56, 55, 40],
+                                    backgroundColor: 'rgba(147, 51, 234, 0.8)',
+                                    borderColor: 'rgb(147, 51, 234)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        labels: { color: 'white' }
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        ticks: { color: 'white' },
+                                        grid: { color: 'rgba(255,255,255,0.1)' }
+                                    },
+                                    x: {
+                                        ticks: { color: 'white' },
+                                        grid: { color: 'rgba(255,255,255,0.1)' }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    // Engagement Chart
+                    const engagementCtx = document.getElementById('engagementChart');
+                    if (engagementCtx) {
+                        new Chart(engagementCtx, {
+                            type: 'radar',
+                            data: {
+                                labels: ['Reach', 'Engagement', 'Growth', 'Retention', 'Conversion'],
+                                datasets: [{
+                                    label: 'Current',
+                                    data: [85, 75, 90, 80, 70],
+                                    borderColor: 'rgb(147, 51, 234)',
+                                    backgroundColor: 'rgba(147, 51, 234, 0.2)',
+                                    pointBackgroundColor: 'rgb(147, 51, 234)'
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        labels: { color: 'white' }
+                                    }
+                                },
+                                scales: {
+                                    r: {
+                                        ticks: { color: 'white' },
+                                        grid: { color: 'rgba(255,255,255,0.1)' },
+                                        pointLabels: { color: 'white' }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                },
+
+                async editAccount(account) {
+                    // Implementation for editing account
+                    console.log('Edit account:', account);
+                    alert('Edit functionality coming soon!');
+                },
+
+                async deleteAccount(accountId) {
+                    if (!confirm('Are you sure you want to delete this account?')) {
+                        return;
+                    }
+                    
+                    try {
+                        const response = await fetch(`/api/facebook/accounts/${accountId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                            }
+                        });
+
+                        if (response.ok) {
+                            this.loadAccounts();
+                            alert('Account deleted successfully!');
+                        } else {
+                            const error = await response.json();
+                            alert(error.error || 'Failed to delete account');
+                        }
+                    } catch (error) {
+                        alert('Network error. Please try again.');
+                    }
+                },
+
+                logout() {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/';
+                }
+            }
+        }
+    </script>
+</body>
+</html> 

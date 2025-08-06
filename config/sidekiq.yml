@@ -1,0 +1,11 @@
+---
+:concurrency: 2
+:queues:
+  - default
+  - critical
+  - low
+:timeout: 30
+:max_retries: 3
+:retry_interval: 5
+:logfile: ./log/sidekiq.log
+:pidfile: ./tmp/pids/sidekiq.pid
